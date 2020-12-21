@@ -102,7 +102,7 @@ public class ActivityList extends AppCompatActivity {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ActivityList.this, MainActivity.class)
+                startActivity(new Intent(ActivityList.this, percobaan.class)
                         .putExtra("id", "")
                         .putExtra("title", "")
                         .putExtra("email", "")
