@@ -3,11 +3,15 @@ package com.example.absensiapps;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,7 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class percobaan extends AppCompatActivity {
+public class percobaan extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG = "percobaan";
     private DatabaseReference database;
@@ -24,30 +28,38 @@ public class percobaan extends AppCompatActivity {
     private EditText etNama, etKelas, etJurusan;
     private ProgressDialog loading;
     private Button btn_cancel, btn_save;
+    private Spinner spinner1;
 
-    private String sPid, sPnama, sPemail, sPdesk;
+    private String sPid, sPnama, sPkelas, sPjurusan;
 
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_percobaan);
 
         database = FirebaseDatabase.getInstance().getReference();
 
         sPid = getIntent().getStringExtra("id");
         sPnama = getIntent().getStringExtra("title");
-        sPemail = getIntent().getStringExtra("email");
-        sPdesk = getIntent().getStringExtra("desk");
+        sPkelas = getIntent().getStringExtra("kelas");
+        sPjurusan = getIntent().getStringExtra("jurusan");
 
-        etNama = findViewById(R.id.et_name);
+        etNama = findViewById(R.id.et_nama);
         etKelas = findViewById(R.id.et_kelas);
         etJurusan = findViewById(R.id.et_jurusan);
         btn_save = findViewById(R.id.btn_save);
         btn_cancel = findViewById(R.id.btn_cancel);
+        spinner1 = findViewById(R.id.spinner1);
+        ArrayAdapter<CharSequence> adapter =ArrayAdapter.createFromResource(this, R.array.text, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner1.setAdapter(adapter);
+        spinner1.setOnItemSelectedListener(this);
 
         etNama.setText(sPnama);
-        etKelas.setText(sPemail);
-        etJurusan.setText(sPdesk);
+        etKelas.setText(sPkelas);
+        etJurusan.setText(sPjurusan);
 
         if (sPid.equals("")){
             btn_save.setText("Save");
@@ -63,8 +75,8 @@ public class percobaan extends AppCompatActivity {
             public void onClick(View view) {
 
                 String Snama = etNama.getText().toString();
-                String Semail = etKelas.getText().toString();
-                String Sdesk = etJurusan.getText().toString();
+                String Skelas = etKelas.getText().toString();
+                String Sjurusan = etJurusan.getText().toString();
 
                 if (btn_save.getText().equals("Save")){
                     // perintah save
@@ -72,11 +84,11 @@ public class percobaan extends AppCompatActivity {
                     if (Snama.equals("")) {
                         etNama.setError("Silahkan masukkan nama");
                         etNama.requestFocus();
-                    } else if (Semail.equals("")) {
-                        etKelas.setError("Silahkan masukkan email");
+                    } else if (Skelas.equals("")) {
+                        etKelas.setError("Silahkan masukkan kelas");
                         etKelas.requestFocus();
-                    } else if (Sdesk.equals("")) {
-                        etJurusan.setError("Silahkan masukkan desk");
+                    } else if (Sjurusan.equals("")) {
+                        etJurusan.setError("Silahkan masukkan jurusan");
                         etJurusan.requestFocus();
                     } else {
                         loading = ProgressDialog.show(percobaan.this,
@@ -87,8 +99,8 @@ public class percobaan extends AppCompatActivity {
 
                         submitUser(new Requests(
                                 Snama.toLowerCase(),
-                                Semail.toLowerCase(),
-                                Sdesk.toLowerCase()));
+                                Skelas.toLowerCase(),
+                                Sjurusan.toLowerCase()));
 
                     }
                 } else {
@@ -96,11 +108,11 @@ public class percobaan extends AppCompatActivity {
                     if (Snama.equals("")) {
                         etNama.setError("Silahkan masukkan nama");
                         etNama.requestFocus();
-                    } else if (Semail.equals("")) {
-                        etKelas.setError("Silahkan masukkan email");
+                    } else if (Skelas.equals("")) {
+                        etKelas.setError("Silahkan masukkan kelas");
                         etKelas.requestFocus();
-                    } else if (Sdesk.equals("")) {
-                        etJurusan.setError("Silahkan masukkan desk");
+                    } else if (Sjurusan.equals("")) {
+                        etJurusan.setError("Silahkan masukkan jurusan");
                         etJurusan.requestFocus();
                     } else {
                         loading = ProgressDialog.show(percobaan.this,
@@ -111,8 +123,8 @@ public class percobaan extends AppCompatActivity {
 
                         editUser(new Requests(
                                 Snama.toLowerCase(),
-                                Semail.toLowerCase(),
-                                Sdesk.toLowerCase()), sPid);
+                                Skelas.toLowerCase(),
+                                Sjurusan.toLowerCase()), sPid);
 
                     }
                 }
@@ -182,4 +194,16 @@ public class percobaan extends AppCompatActivity {
 
                 });
     }
-        }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
+        String text = parent.getItemAtPosition(position).toString();
+        Toast.makeText(parent.getContext(),text, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+}

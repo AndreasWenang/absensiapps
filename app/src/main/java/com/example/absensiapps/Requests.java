@@ -1,16 +1,13 @@
 package com.example.absensiapps;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
 import java.io.Serializable;
 
 public class Requests implements Serializable {
 
     private String nama;
-    private String email;
-    private String deskripsi;
+    private String kelas;
+    private String jurusan;
+
 
     private String key;
 
@@ -18,22 +15,22 @@ public class Requests implements Serializable {
 
     }
 
-    public Requests(String nama, String email, String deskripsi){
+    public Requests(String nama, String kelas, String jurusan){
         this.nama= nama;
-        this.email= email;
-        this.deskripsi= deskripsi;
+        this.kelas = kelas;
+        this.jurusan = jurusan;
     }
      public String getNama() {return nama; }
 
      public void setNama(String nama) {this.nama= nama;}
 
-    public String getEmail() {return email; }
+    public String getKelas() {return kelas; }
 
-    public void setEmail(String email) {this.email= email;}
+    public void setKelas(String kelas) {this.kelas = kelas;}
 
-    public String getDeskripsi() {return deskripsi; }
+    public String getJurusan() {return jurusan; }
 
-    public void setDeskripsi(String deskripsi) {this.deskripsi= deskripsi;}
+    public void setJurusan(String jurusan) {this.jurusan = jurusan;}
 
     public String getKey() {return key; }
 
@@ -43,7 +40,7 @@ public class Requests implements Serializable {
     @Override
     public String toString() {
         return " " + nama + "\n" +
-                " " + email + "\n" +
-                " " + deskripsi ;
+                " " + kelas + "\n" +
+                " " + jurusan;
     }
 }

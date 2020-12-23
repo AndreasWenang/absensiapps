@@ -1,12 +1,9 @@
 package com.example.absensiapps;
 
-import android.app.ListActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.View;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -53,8 +50,7 @@ public class ActivityList extends AppCompatActivity {
                 true,
                 false);
 
-        database.child("Request");
-        database.addValueEventListener(new ValueEventListener() {
+        database.child("Request").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -105,8 +101,8 @@ public class ActivityList extends AppCompatActivity {
                 startActivity(new Intent(ActivityList.this, percobaan.class)
                         .putExtra("id", "")
                         .putExtra("title", "")
-                        .putExtra("email", "")
-                        .putExtra("desk", ""));
+                        .putExtra("kelas", "")
+                        .putExtra("jurusan", ""));
             }
         });
     }

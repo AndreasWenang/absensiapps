@@ -11,4 +11,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string-array name="text">
+        <item>11 rpl 1</item>
+        <item>12 rpl 2</item>
+    </string-array>
 </resources>
