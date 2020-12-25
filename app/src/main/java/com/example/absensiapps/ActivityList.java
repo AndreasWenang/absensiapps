@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 public class ActivityList extends AppCompatActivity {
 
+
     private DatabaseReference database;
 
     private ArrayList<Requests> daftarReq;
