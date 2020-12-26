@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.absensiapps.databinding.ActivityPercobaanBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 
 public class ActivityList extends AppCompatActivity {
 
-
     private DatabaseReference database;
 
     private ArrayList<Requests> daftarReq;
@@ -29,7 +29,6 @@ public class ActivityList extends AppCompatActivity {
 
     private RecyclerView rc_list_request;
     private ProgressDialog loading;
-    private FloatingActionButton fab_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,6 @@ public class ActivityList extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference();
 
         rc_list_request = findViewById(R.id.rc_list_request);
-        fab_add = findViewById(R.id.fab_add);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rc_list_request.setLayoutManager(mLayoutManager);
@@ -96,15 +94,5 @@ public class ActivityList extends AppCompatActivity {
             }
         });
 
-        fab_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ActivityList.this, percobaan.class)
-                        .putExtra("id", "")
-                        .putExtra("title", "")
-                        .putExtra("kelas", "")
-                        .putExtra("jurusan", ""));
-            }
-        });
     }
 }

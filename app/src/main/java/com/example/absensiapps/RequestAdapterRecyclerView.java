@@ -10,56 +10,55 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.absensiapps.databinding.ItemRequestBinding;
+
 import java.util.List;
 
 public class RequestAdapterRecyclerView extends RecyclerView.Adapter<RequestAdapterRecyclerView.MyViewHolder> {
 
-    private List<Requests> moviesList;
+    private List<Requests> requestsList;
     private Activity mActivity;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout rl_layout;
-        public TextView tv_title, tv_email, tv_jurusan;
+        ItemRequestBinding binding2;
 
-        public MyViewHolder(View view) {
-            super(view);
-            rl_layout = view.findViewById(R.id.rl_layout);
-            tv_title = view.findViewById(R.id.tv_title);
-            tv_email = view.findViewById(R.id.tv_email);
-            tv_jurusan = view.findViewById(R.id.tv_jurusan);
+        public LinearLayout rl_layout;
+
+        public MyViewHolder(ItemRequestBinding binding2) {
+            super(binding2.getRoot());
+            this.binding2=binding2;
         }
     }
 
-    public RequestAdapterRecyclerView(List<Requests> moviesList, Activity activity) {
-        this.moviesList = moviesList;
+    public RequestAdapterRecyclerView(List<Requests> requestsList, Activity activity) {
+        this.requestsList = requestsList;
         this.mActivity = activity;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_request, parent, false);
-
-        return new MyViewHolder(itemView);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            ItemRequestBinding binding2= ItemRequestBinding.inflate(layoutInflater, parent, false);
+            return new MyViewHolder(binding2);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final Requests movie = moviesList.get(position);
+        final Requests requests = requestsList.get(position);
+        holder.binding2.setRequests(requests);
+        holder.binding2.tvTitle.setText(requests.getNama());
+        holder.binding2.tvEmail.setText(requests.getKelas());
+        holder.binding2.tvJurusan.setText(requests.getJurusan());
 
-        holder.tv_title.setText(movie.getNama());
-        holder.tv_email.setText(movie.getKelas());
-        holder.tv_jurusan.setText(movie.getJurusan());
-
-        holder.rl_layout.setOnClickListener(new View.OnClickListener() {
+        holder.binding2.rlLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent goDetail = new Intent(mActivity, percobaan.class);
-                goDetail.putExtra("id", movie.getKey());
-                goDetail.putExtra("title", movie.getNama());
-                goDetail.putExtra("kelas", movie.getKelas());
-                goDetail.putExtra("jurusan", movie.getJurusan());
+                goDetail.putExtra("id", requests.getKey());
+                goDetail.putExtra("title", requests.getNama());
+                goDetail.putExtra("kelas", requests.getKelas());
+                goDetail.putExtra("jurusan", requests.getJurusan());
 
                 mActivity.startActivity(goDetail);
 
@@ -71,7 +70,7 @@ public class RequestAdapterRecyclerView extends RecyclerView.Adapter<RequestAdap
 
     @Override
     public int getItemCount() {
-        return moviesList.size();
+        return requestsList.size();
     }
 
 

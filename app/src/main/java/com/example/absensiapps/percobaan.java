@@ -2,19 +2,15 @@ package com.example.absensiapps;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.adapters.ActionMenuViewBindingAdapter;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.absensiapps.databinding.ActivityPercobaanBinding;
@@ -24,9 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class percobaan extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class percobaan extends AppCompatActivity {
 
-    ActivityPercobaanBinding binding;
+    ActivityPercobaanBinding binding1;
 
     private static final String TAG = "percobaan";
     private DatabaseReference database;
@@ -41,7 +37,7 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding= DataBindingUtil.setContentView(this,R.layout.activity_percobaan);
+        binding1 = DataBindingUtil.setContentView(this,R.layout.activity_percobaan);
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -51,44 +47,39 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
         sPjurusan = getIntent().getStringExtra("jurusan");
 
 
-        ArrayAdapter<CharSequence> adapter =ArrayAdapter.createFromResource(this, R.array.text, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinner1.setAdapter(adapter);
-        binding.spinner1.setOnItemSelectedListener(this);
-
-        binding.etNama.setText(sPnama);
-        binding.etKelas.setText(sPkelas);
-        binding.etJurusan.setText(sPjurusan);
+        binding1.etNama.setText(sPnama);
+        binding1.etKelas.setText(sPkelas);
+        binding1.etJurusan.setText(sPjurusan);
 
         if (sPid.equals("")){
-            binding.btnSave.setText("Save");
-            binding.btnCancel.setText("Cancel");
+            binding1.btnSave.setText("Save");
+            binding1.btnCancel.setText("Cancel");
         } else {
-            binding.btnSave.setText("Edit");
-            binding.btnCancel.setText("Delete");
+            binding1.btnSave.setText("Edit");
+            binding1.btnCancel.setText("Delete");
         }
 
 
-        binding.btnSave.setOnClickListener(new View.OnClickListener() {
+        binding1.btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String Snama = binding.etNama.getText().toString();
-                String Skelas = binding.etKelas.getText().toString();
-                String Sjurusan = binding.etJurusan.getText().toString();
+                String Snama = binding1.etNama.getText().toString();
+                String Skelas = binding1.etKelas.getText().toString();
+                String Sjurusan = binding1.etJurusan.getText().toString();
 
-                if (binding.btnSave.getText().equals("Save")){
+                if (binding1.btnSave.getText().equals("Save")){
                     // perintah save
 
                     if (Snama.equals("")) {
-                        binding.etNama.setError("Silahkan masukkan nama");
-                        binding.etNama.requestFocus();
+                        binding1.etNama.setError("Silahkan masukkan nama");
+                        binding1.etNama.requestFocus();
                     } else if (Skelas.equals("")) {
-                        binding.etKelas.setError("Silahkan masukkan kelas");
-                        binding.etKelas.requestFocus();
+                        binding1.etKelas.setError("Silahkan masukkan kelas");
+                        binding1.etKelas.requestFocus();
                     } else if (Sjurusan.equals("")) {
-                        binding.etJurusan.setError("Silahkan masukkan jurusan");
-                        binding.etJurusan.requestFocus();
+                        binding1.etJurusan.setError("Silahkan masukkan jurusan");
+                        binding1.etJurusan.requestFocus();
                     } else {
                         loading = ProgressDialog.show(percobaan.this,
                                 null,
@@ -105,14 +96,14 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
                 } else {
                     // perintah edit
                     if (Snama.equals("")) {
-                        binding.etNama.setError("Silahkan masukkan nama");
-                        binding.etNama.requestFocus();
+                        binding1.etNama.setError("Silahkan masukkan nama");
+                        binding1.etNama.requestFocus();
                     } else if (Skelas.equals("")) {
-                        binding.etKelas.setError("Silahkan masukkan kelas");
-                        binding.etKelas.requestFocus();
+                        binding1.etKelas.setError("Silahkan masukkan kelas");
+                        binding1.etKelas.requestFocus();
                     } else if (Sjurusan.equals("")) {
-                        binding.etJurusan.setError("Silahkan masukkan jurusan");
-                        binding.etJurusan.requestFocus();
+                        binding1.etJurusan.setError("Silahkan masukkan jurusan");
+                        binding1.etJurusan.requestFocus();
                     } else {
                         loading = ProgressDialog.show(percobaan.this,
                                 null,
@@ -131,15 +122,28 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
             }
         });
 
-        binding.btnCancel.setOnClickListener(new View.OnClickListener() {
+        binding1.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (binding.btnCancel.getText().equals("Cancel")) {
+                if (binding1.btnCancel.getText().equals("Cancel")) {
                     //tutup page
                     finish();
                 } else {
                     // delete
+                    database.child("Request")
+                            .child(sPid)
+                            .removeValue()
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(percobaan.this,
+                                            "Data Berhasil didelete",
+                                            Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(percobaan.this, ActivityList.class));
+
+                                }
+                            });
                 }
 
             }
@@ -158,9 +162,9 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
 
                                 loading.dismiss();
 
-                                binding.etNama.setText("");
-                                binding.etKelas.setText("");
-                                binding.etJurusan.setText("");
+                                binding1.etNama.setText("");
+                                binding1.etKelas.setText("");
+                                binding1.etJurusan.setText("");
 
                                 Toast.makeText(percobaan.this,
                                         "Data Berhasil ditambahkan",
@@ -181,9 +185,9 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
 
                         loading.dismiss();
 
-                        binding.etNama.setText("");
-                        binding.etKelas.setText("");
-                        binding.etJurusan.setText("");
+                        binding1.etNama.setText("");
+                        binding1.etKelas.setText("");
+                        binding1.etJurusan.setText("");
 
                         Toast.makeText(percobaan.this,
                                 "Data Berhasil diedit",
@@ -192,17 +196,5 @@ public class percobaan extends AppCompatActivity implements AdapterView.OnItemSe
                     }
 
                 });
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-        String text = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),text, Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
     }
 }
