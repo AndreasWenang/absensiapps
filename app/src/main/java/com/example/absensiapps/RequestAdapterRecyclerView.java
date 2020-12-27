@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +53,7 @@ public class RequestAdapterRecyclerView extends RecyclerView.Adapter<RequestAdap
             @Override
             public void onClick(View view) {
 
-                Intent goDetail = new Intent(mActivity, percobaan.class);
+                Intent goDetail = new Intent(mActivity, Input.class);
                 goDetail.putExtra("id", requests.getKey());
                 goDetail.putExtra("title", requests.getNama());
                 goDetail.putExtra("kelas", requests.getKelas());

@@ -21,7 +21,7 @@ public class Startup extends AppCompatActivity {
         btn_tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Startup.this, percobaan.class)
+                startActivity(new Intent(Startup.this, Input.class)
                         .putExtra("id", "")
                         .putExtra("title", "")
                         .putExtra("kelas", "")

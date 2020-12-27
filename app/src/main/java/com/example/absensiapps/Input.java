@@ -9,20 +9,18 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
-import com.example.absensiapps.databinding.ActivityPercobaanBinding;
+import com.example.absensiapps.databinding.ActivityInputBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class percobaan extends AppCompatActivity {
+public class Input extends AppCompatActivity {
 
-    ActivityPercobaanBinding binding1;
+    ActivityInputBinding binding1;
 
     private static final String TAG = "percobaan";
     private DatabaseReference database;
@@ -37,7 +35,7 @@ public class percobaan extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding1 = DataBindingUtil.setContentView(this,R.layout.activity_percobaan);
+        binding1 = DataBindingUtil.setContentView(this,R.layout.activity_input);
 
         database = FirebaseDatabase.getInstance().getReference();
 
@@ -81,7 +79,7 @@ public class percobaan extends AppCompatActivity {
                         binding1.etJurusan.setError("Silahkan masukkan jurusan");
                         binding1.etJurusan.requestFocus();
                     } else {
-                        loading = ProgressDialog.show(percobaan.this,
+                        loading = ProgressDialog.show(Input.this,
                                 null,
                                 "Please wait...",
                                 true,
@@ -105,7 +103,7 @@ public class percobaan extends AppCompatActivity {
                         binding1.etJurusan.setError("Silahkan masukkan jurusan");
                         binding1.etJurusan.requestFocus();
                     } else {
-                        loading = ProgressDialog.show(percobaan.this,
+                        loading = ProgressDialog.show(Input.this,
                                 null,
                                 "Please wait...",
                                 true,
@@ -137,10 +135,13 @@ public class percobaan extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(percobaan.this,
+                                    Toast.makeText(Input.this,
                                             "Data Berhasil didelete",
                                             Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(percobaan.this, ActivityList.class));
+                                    Intent backIntent = new Intent(Input.this, ActivityList.class);
+                                    startActivity(backIntent);
+                                    finish();
+
 
                                 }
                             });
@@ -156,7 +157,7 @@ public class percobaan extends AppCompatActivity {
                 database.child("Request")
                         .push()
                         .setValue(requests)
-                        .addOnCompleteListener(percobaan.this, new OnCompleteListener<Void>() {
+                        .addOnCompleteListener(Input.this, new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
@@ -166,7 +167,7 @@ public class percobaan extends AppCompatActivity {
                                 binding1.etKelas.setText("");
                                 binding1.etJurusan.setText("");
 
-                                Toast.makeText(percobaan.this,
+                                Toast.makeText(Input.this,
                                         "Data Berhasil ditambahkan",
                                         Toast.LENGTH_SHORT).show();
                             }
@@ -189,7 +190,7 @@ public class percobaan extends AppCompatActivity {
                         binding1.etKelas.setText("");
                         binding1.etJurusan.setText("");
 
-                        Toast.makeText(percobaan.this,
+                        Toast.makeText(Input.this,
                                 "Data Berhasil diedit",
                                 Toast.LENGTH_SHORT).show();
 
